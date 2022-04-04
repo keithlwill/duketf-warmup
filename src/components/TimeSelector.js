@@ -6,13 +6,14 @@ let localMinutes = d.getMinutes()
 
 let localTime = localHours + ":" + localMinutes
 
-
 export default function TimeSelector() {
     return (
-        <div class = "TimeSelector">
-        <label id = "label">What time does your event start?</label>
-        <input id = "TimeInput" type="time" defaultValue = {localTime} ></input>
-        <input type = "submit" value = "Submit time"></input>
+        <div>
+            <form class = "TimeSelector">
+                <label id = "label">What time does your event start?</label>
+                <input id = "TimeInput" type="time" defaultValue = {localTime} ></input>
+                <input type = "submit" value = "Submit time"></input>
+            </form>
         </div>
     );
 }
