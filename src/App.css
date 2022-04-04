@@ -1,5 +1,21 @@
 .App {
+  display: flex;
   text-align: center;
+  flex-direction: column;
+}
+
+#TimeInput {
+  font-size: large;
+}
+
+#label {
+  padding-bottom: 1rem;
+}
+
+.TimeSelector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .App-logo {
