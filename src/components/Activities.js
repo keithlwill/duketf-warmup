@@ -4,7 +4,25 @@ import React from 'react'
 
 //activity name, duration, etc will be handled here?
 
-let chicken = 5
+//numbers are defined in terms of minutes. 
+//Start is how many minutes before the event the acticity should begin
+const warmUps = [
+    {
+        name: "Check In/Put Approaches Out",
+        start: 120,
+        duration: 15
+    },
+    {
+        name: "General Warm Up",
+        start: 105,
+        duration: 30
+    },
+    {
+        name: "Bow",
+        start: 75,
+        duration: 20
+    }
+]
 
 class Activities extends React.Component {
     
