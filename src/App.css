@@ -8,7 +8,13 @@
   font-size: large;
 }
 
+#mainHeader {
+  background-color: #00539B;
+  color: white;
+}
+
 #label {
+  padding-top: 0.5rem;
   padding-bottom: 1rem;
 }
 
@@ -16,7 +22,39 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 1rem;
 }
+
+
+table {
+  margin: auto;
+  width: 90%;
+  border-collapse: collapse;
+  table-layout: auto;
+  text-align: center;
+}
+
+th {
+  background-color: #00539B;
+  color: white;
+}
+
+
+
+tr:nth-child(odd) {background-color: #f2f2f2;} 
+
+table, th, td {
+  border: 2px solid #00539B;
+}
+td{
+  padding: 0.4rem;
+  text-align: left;
+}
+
+.grid{
+  justify-content: center;
+}
+
 
 .App-logo {
   height: 40vmin;
@@ -40,15 +78,3 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

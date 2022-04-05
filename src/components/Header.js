@@ -1,7 +1,11 @@
 import React from 'react'
 
-export default function TimeSelector() {
+export default function Header() {
     return (
-        <h1>#BounceHouse</h1>
+        <div id="mainHeader">
+            <h1>#BounceHouse</h1>
+            <h3>Duke Track and Field</h3>
+        </div>
+
     );
 }
