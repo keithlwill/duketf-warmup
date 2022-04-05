@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import React from 'react'
+import Activities from './Activities';
 
 const d = new Date();
 let localHours = d.getHours();
@@ -11,32 +12,10 @@ let localTime = localHours + ":" + localMinutes;
 class TimeReturner extends React.Component {
 
     state = {
-        eventStartTime: localTime
+        eventStartTime: localTime,
+        submission: false
     }
 
-    timeConversion = (time) => {
-        let defaultDate = "December 25, 2000"
-        let modifiedTime = time + ":00"
-        let compatibleDate = defaultDate + " " + modifiedTime
-        let dateObject = new Date(compatibleDate);
-
-        return dateObject.toLocaleTimeString();
-    }
-
-    subtractTime = (time, mins) => {
-        let defaultDate = "December 25, 2000"
-        let modifiedTime = time + ":00"
-        let compatibleDate = new Date(defaultDate + " " + modifiedTime)
-
-        let ms = compatibleDate.getTime()
-
-        let subtraction = ms - (mins * 60000)
-
-        let subDate = new Date(subtraction)
-
-        return subDate.toLocaleTimeString();
-
-    }
 
     handleTimeChange = (event) => {
         this.setState(
@@ -44,16 +23,27 @@ class TimeReturner extends React.Component {
         )
     }
 
+    handleSubmission = (event) => {
+        event.preventDefault();
+        this.setState(
+            {submission: true}
+        )
+    }
+
     render() {
         return(
+            <div>
             <form className = "TimeInput">
                 <label id = "label">What time does your event start?</label>
                 <input id = "TimeInput" type="time" defaultValue = {localTime} onChange = {this.handleTimeChange}></input>
-                <input type = "submit" value = "Submit time"></input>
-                <h1>The selected time is: {this.state.eventStartTime}</h1>
-                <h1>Practicing working with dates! {this.timeConversion(this.state.eventStartTime)}</h1>
-                <h1>Subtracting 5 minutes: {this.subtractTime(this.state.eventStartTime, 5)}</h1>
+                <input id = "button" type = "submit" value = "Submit Time" onClick={this.handleSubmission}></input>
+                <h1>State of eventStartTime is {this.state.eventStartTime}</h1>
+                <h1>State of submission is {this.state.submission}</h1>
             </form> 
+            <div className='schedule' style={{visibility: this.state.submission ? 'visible' : 'hidden'}}>
+                <Activities startTime = {this.state.eventStartTime} />
+            </div>
+            </div>
         )
     }
 }

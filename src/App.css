@@ -24,6 +24,10 @@
   align-items: center;
 }
 
+#button {
+  font-size: 1.5rem;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
