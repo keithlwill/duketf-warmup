@@ -11,7 +11,9 @@ function timeToString(t) {
     let toAdd = "";
     if (hours >= 12) {
         PM = true;
-        hours -= 12;
+        if (hours > 12) {
+            hours -= 12;
+        }
     }
 
     if (mins < 10) {
@@ -69,6 +71,17 @@ function getList(eventTime) {
         "Rest": [[2, 0], [2, 15]]
     }
 
+    let negativeStartEndTimes = {
+        "Check-in, Put Approaches Out": [[-2, -15], [-2, 0]],
+        "General Warm Up": [[-2, 0], [-1, -30]],
+        "Bow": [[-1, -30], [-1, -15]],
+        "Snake Runs on Track x2": [[-1, -15], [-1, 0]],
+        "Full Approach Run Through x2": [[-1, 0], [0, -45]],
+        "Full Approach Pop-Up x1": [[0, -45], [0, -30]],
+        "Full Approach Jumps x2-3": [[0, -30], [0, -15]],
+        "Rest": [[0, -15], [0, 0]]
+    }
+
 
     let now = new Date();
     let currHour = now.getHours();
@@ -78,8 +91,10 @@ function getList(eventTime) {
     let min = parseInt(eventTime.split(":")[1]);
 
     currMin = (currMin % 5 == 0) ? currMin : currMin + (5 - (currMin % 5));
-    startEndTimes["Rest"][1][1] += min % 5;
+    negativeStartEndTimes["Rest"][1][1] += min % 5;
     min = (min % 5 == 0) ? min : min - (min % 5);
+
+    let eventInterval = [hour, min];
 
 
     if (currMin >= 60) {
@@ -97,8 +112,8 @@ function getList(eventTime) {
 
     let data = lst.map((x) => ({
         exercise: x,
-        start: timeToString(addTimes(currTime, startEndTimes[x][0])),
-        end: timeToString(addTimes(currTime, startEndTimes[x][1]))
+        start: timeToString(addTimes(eventInterval, negativeStartEndTimes[x][0])),
+        end: timeToString(addTimes(eventInterval, negativeStartEndTimes[x][1]))
     }));
 
 
