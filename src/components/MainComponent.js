@@ -2,19 +2,22 @@ import React from 'react'
 import Grid from './Grid';
 import TimeSelector from './TimeSelector';
 
-function timeToString(t) {
+function timeToString(t, printable) {
 
     let hours = t[0];
     let mins = t[1];
 
     let PM = false;
     let toAdd = "";
-    if (hours >= 12) {
-        PM = true;
-        if (hours > 12) {
-            hours -= 12;
+    if (printable) {
+        if (hours >= 12) {
+            PM = true;
+            if (hours > 12) {
+                hours -= 12;
+            }
         }
     }
+
 
     if (mins < 10) {
         toAdd = "0";
@@ -24,7 +27,7 @@ function timeToString(t) {
     if (PM) {
         ret += " PM";
     }
-    else ret += " AM";
+    else if (printable) ret += " AM";
 
 
     return ret;
@@ -42,6 +45,10 @@ function addTimes(time1, time2) {
     if (ret[1] < 0) {
         ret[1] += 60;
         ret[0] -= 1;
+    }
+
+    if (ret[0] >= 24) {
+        ret[0] -= 24;
     }
 
     return ret;
@@ -112,8 +119,8 @@ function getList(eventTime) {
 
     let data = lst.map((x) => ({
         exercise: x,
-        start: timeToString(addTimes(eventInterval, negativeStartEndTimes[x][0])),
-        end: timeToString(addTimes(eventInterval, negativeStartEndTimes[x][1]))
+        start: timeToString(addTimes(eventInterval, negativeStartEndTimes[x][0]), true),
+        end: timeToString(addTimes(eventInterval, negativeStartEndTimes[x][1]), true)
     }));
 
 
@@ -123,46 +130,44 @@ function getList(eventTime) {
 
 export default class MainComponent extends React.Component {
     constructor(props) {
+        let d = new Date();
+        let m = (d.getMinutes() % 5 == 0) ? d.getMinutes() : d.getMinutes() + (5 - (d.getMinutes() % 5));
+        let h = (m == 60) ? d.getHours() + 1 : d.getHours();
+        if (h == 24) h = 0;
+
+        let startDefault = addTimes([h, m], [2, 15]);
+
         super(props);
         this.state = {
-            ready: false,
-            time: "12:00",
-            data: null,
-            timeChanged: false
+
+            time: timeToString(addTimes([h, m], [2, 15]), false),
+            data: getList(timeToString(addTimes([h, m], [2, 15]), false)),
         }
 
         this.onTimeChange = this.onTimeChange.bind(this);
-        this.onSubmitChange = this.onSubmitChange.bind(this);
     }
 
     onTimeChange(time) {
         this.setState({
-            ready: this.state.ready,
             time: time,
-            data: this.state.data,
-            timeChanged: true
+            data: getList(time),
         })
     }
 
     onSubmitChange() {
         this.setState({
-            ready: true,
-            time: this.state.time,
-            data: getList(this.state.time),
-            timeChanged: this.state.timeChanged
         })
     }
-    6
+
     render() {
         return (
             <div>
                 <TimeSelector
-                    onSubmitChange={this.onSubmitChange}
                     onTimeChange={this.onTimeChange}
                     timeChanged={this.state.timeChanged}
+                    currentTime={this.state.time}
                 />
                 <Grid
-                    ready={this.state.ready}
                     data={this.state.data}
                 />
             </div>
